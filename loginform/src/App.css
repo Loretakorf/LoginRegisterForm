@@ -1,7 +1,22 @@
 .App {
   text-align: center;
 }
-
+html {
+  min-height: 100vH;
+}
+body {
+  background-image: url("https://ecobnb.com/blog/app/uploads/sites/3/2021/09/Progetto-senza-titolo-5.jpg.webp");
+  background-size: cover;
+  /* background-position: center; */
+  background-repeat: no-repeat;
+  color: white;
+}
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 36px;
+  font-weight: 600;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
