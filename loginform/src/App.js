@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { routes } from "./constants/routes";
+import { HOME, LOGIN, WELCOME, routes } from "./constants/routes";
 import LoginPage from "./pages/Loginpage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import HomePage from "./pages/Homepage/Homepage";
@@ -19,9 +19,9 @@ function App() {
     <div className="App">
       <Layout>
         <Routes>
-          <Route path={routes.defaultPage} element={<WelcomePage />} />
+          <Route path={WELCOME} element={<WelcomePage />} />
           <Route
-            path={routes.loginPage}
+            path={LOGIN}
             element={<LoginPage />}
             token={token}
             onLogin={(token) => {
@@ -30,7 +30,7 @@ function App() {
             }}
           />
           <Route
-            path={routes.homePage}
+            path={HOME}
             element={<HomePage />}
             token={token}
             onLogout={() => {

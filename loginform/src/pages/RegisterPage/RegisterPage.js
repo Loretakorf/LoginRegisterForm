@@ -1,4 +1,3 @@
-
 import { Box, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Heading from "../../components/Heading/Heading";
@@ -14,11 +13,17 @@ const RegisterPage = () => {
     handleSubmit,
     isValid,
     formState: errors,
-  } = useForm({ email: "", password: "", passwordRepeat: "", firstName: "", lastName: "" });
+  } = useForm({
+    email: "",
+    password: "",
+    passwordRepeat: "",
+    firstName: "",
+    lastName: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [step, setStep] = useState(0);
- 
+
   const [success, setSuccess] = useState(false);
 
   const onSubmit = async (formdata) => {
@@ -34,7 +39,6 @@ const RegisterPage = () => {
       formdata.checkbox
     ) {
       setLoading(true);
-      
     }
     if (formdata.password !== formdata.passwordRepeat) {
       setError(error);
@@ -50,7 +54,7 @@ const RegisterPage = () => {
       });
 
       setError(null);
-      setSuccess(true); 
+      setSuccess(true);
     } catch (error) {
       setError("Failed to register user");
     }
@@ -73,7 +77,13 @@ const RegisterPage = () => {
                     name="email"
                     type="email"
                     placeholder="Email"
-                    register={register}
+                    {...register("email", {
+                      required: "Required",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "invalid email address",
+                      },
+                    })}
                     message="Email is required"
                     disable={isValid}
                   />
@@ -84,8 +94,15 @@ const RegisterPage = () => {
                     name="password"
                     type="password"
                     placeholder="Password"
-                    register={register}
-                    message="Password must have minimum six letters"
+                    {...register("password", {
+                      required: "Required",
+                      pattern: {
+                        value:
+                          /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+                        message:
+                          "Password requirements: 8-20 characters, 1 number, 1 letter, 1 symbol.",
+                      },
+                    })}
                     disable={isValid}
                   />
                   {errors.password && <p>{errors.password.message}</p>}
@@ -99,7 +116,9 @@ const RegisterPage = () => {
                     message="Password must mutch"
                     disable={isValid}
                   />
-                   {errors.passwordRepeat && <p>{errors.passwordRepeat.message}</p>}
+                  {errors.passwordRepeat && (
+                    <p>{errors.passwordRepeat.message}</p>
+                  )}
                   <Button onClick={() => setStep(step + 1)} label="Next" />
                 </Box>
               )}
@@ -133,7 +152,6 @@ const RegisterPage = () => {
                     name={"checkbox"}
                     register={register}
                     label="I accept terms and conditions"
-                   
                   />
 
                   <Button onClick={() => setStep(step - 1)} label={"Back"} />
