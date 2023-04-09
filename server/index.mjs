@@ -1,7 +1,11 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv"
-
+import { registerController } from "./controller/registerController.mjs";
+import { loginController } from "./controller/loginController.mjs";
+import { userController } from "./controller/userCotroller.mjs"
+import { decodeToken } from "./utils/token.mjs";
+import { usersList } from "./data/usersList.mjs";
 
 dotenv.config();
 const app = express();
@@ -23,7 +27,7 @@ app.use((req, _, next) => {
 
 app.post("/login", loginController);
 app.post("/register", registerController);
-app.get("/home",listController)
+app.get("/home", userController)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
