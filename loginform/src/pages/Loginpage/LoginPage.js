@@ -4,9 +4,9 @@ import { loginUser } from "../../helpers/loginUser";
 import { Box, CircularProgress } from "@mui/material";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
+import HomePage from "../Homepage/Homepage";
 
-
-const LoginPage = ({onLogin}) => {
+const LoginPage = ({ onLogin, token }) => {
   const {
     register,
     isValid,
@@ -23,13 +23,12 @@ const LoginPage = ({onLogin}) => {
     }
     try {
       setLoading(true);
-    const response =  await loginUser({
+      const response = await loginUser({
         email: formdata.email,
         password: formdata.password,
       });
       onLogin(response.token);
       setError(null);
-    
     } catch (error) {
       setError("Failed to register user");
     }
@@ -38,34 +37,38 @@ const LoginPage = ({onLogin}) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Box display="flex" flexDirection="column" gap={3} marginTop={18}>
-          <Input
-            required
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Email"
-            register={register}
-            message="Email is required"
-            disable={isValid}
-          />
-          {errors.email && <p>{errors.email.message}</p>}
-          <Input
-            required
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Password"
-            register={register}
-            message="Password must have minimum six letters"
-            disable={isValid}
-          />
-          {errors.password && <p>{errors.password.message}</p>}
-          <Button type="submit" label={"Login"}/>
-          {loading && <CircularProgress />}
-        </Box>
-      </form>
+      {token ? (
+        <HomePage />
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box display="flex" flexDirection="column" gap={3} marginTop={18}>
+            <Input
+              required
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              register={register}
+              message="Email is required"
+              disable={isValid}
+            />
+            {errors.email && <p>{errors.email.message}</p>}
+            <Input
+              required
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Password"
+              register={register}
+              message="Password must have minimum six letters"
+              disable={isValid}
+            />
+            {errors.password && <p>{errors.password.message}</p>}
+            <Button type="submit" label={"Login"} />
+            {loading && <CircularProgress />}
+          </Box>
+        </form>
+      )}
     </div>
   );
 };

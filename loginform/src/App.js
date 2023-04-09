@@ -7,7 +7,7 @@ import HomePage from "./pages/Homepage/Homepage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import Layout from "./components/Layout/Layout";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
-import Cookies from "cookie";
+import Cookies from "js-cookie"
 import { useState } from "react";
 
 const defaultToken = Cookies.get("_todo_token");

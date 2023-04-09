@@ -5,18 +5,22 @@ import Button from "../../components/Button";
 import { getUser } from "../../helpers/getUser";
 import { useNavigate, Navigate } from "react-router-dom";
 
-const HomePage = ({ onLogout }) => {
+const HomePage = ({ onLogout , token }) => {
   const [user, setUser] = useState();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  Navigate = useNavigate();
+ const navigate = useNavigate();
 
   const handleLogout = () => {
     onLogout();
-    Navigate("/");
+    navigate("/");
   };
 
   const getUserInfo = async () => {
+    if (!token) {
+        return <Navigate to="/login" />;
+      } 
+      
     try {
       setLoading(true);
      const response = await getUser();
@@ -28,6 +32,7 @@ const HomePage = ({ onLogout }) => {
     }
     setLoading(false);
   };
+
   useEffect(() => {
     getUserInfo();
   });
@@ -47,4 +52,5 @@ const HomePage = ({ onLogout }) => {
     </div>
   );
 };
+
 export default HomePage;
