@@ -5,11 +5,11 @@ import Button from "../../components/Button";
 import { getUser } from "../../helpers/getUser";
 import { useNavigate, Navigate } from "react-router-dom";
 
-const HomePage = ({ onLogout , token }) => {
+const HomePage = ({ onLogout, token }) => {
   const [user, setUser] = useState();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     onLogout();
@@ -18,12 +18,12 @@ const HomePage = ({ onLogout , token }) => {
 
   const getUserInfo = async () => {
     if (!token) {
-        return <Navigate to="/login" />;
-      } 
-      
+      return <Navigate to="/login" />;
+    }
+
     try {
       setLoading(true);
-     const response = await getUser();
+      const response = await getUser();
       setUser(response.user);
       setError(null);
     } catch (error) {

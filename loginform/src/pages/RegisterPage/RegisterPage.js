@@ -1,3 +1,4 @@
+
 import { Box, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Heading from "../../components/Heading/Heading";
@@ -6,6 +7,7 @@ import LoginPage from "../Loginpage/LoginPage";
 import { registerUser } from "../../helpers/registerUser";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
+
 const RegisterPage = () => {
   const {
     register,
@@ -16,9 +18,24 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [step, setStep] = useState(0);
+ 
   const [success, setSuccess] = useState(false);
 
   const onSubmit = async (formdata) => {
+    if (step === 0 && formdata.email && formdata.password) {
+      setStep(1);
+
+      setLoading(false);
+    }
+    if (
+      step === 1 &&
+      formdata.firstName &&
+      formdata.lastName &&
+      formdata.checkbox
+    ) {
+      setLoading(true);
+      
+    }
     if (formdata.password !== formdata.passwordRepeat) {
       setError(error);
       return;
@@ -33,7 +50,7 @@ const RegisterPage = () => {
       });
 
       setError(null);
-      setSuccess(true); //not sure
+      setSuccess(true); 
     } catch (error) {
       setError("Failed to register user");
     }
@@ -79,9 +96,10 @@ const RegisterPage = () => {
                     type="password"
                     placeholder="Password(repeat)"
                     register={register}
+                    message="Password must mutch"
                     disable={isValid}
                   />
-                  {error && "Password must mutch"}
+                   {errors.passwordRepeat && <p>{errors.passwordRepeat.message}</p>}
                   <Button onClick={() => setStep(step + 1)} label="Next" />
                 </Box>
               )}

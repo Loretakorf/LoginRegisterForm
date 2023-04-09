@@ -1,17 +1,16 @@
-const Input = ({ placeholder, type, id, register, name, isValid, label }) => {
- 
+const Input = ({ placeholder, type, errors, disabled, id, name, register }) => {
   return (
     <div className="input-container">
       <input
         required
+        
         placeholder={placeholder}
+        {...register(name)}
         type={type}
-        label={label}
         id={id}
-       {...register[name]}
-       disabled={isValid}
+        error={errors}
+        disabled={disabled}
       />
-    
     </div>
   );
 };

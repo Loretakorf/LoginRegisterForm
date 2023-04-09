@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv"
 import { registerController } from "./controller/registerController.mjs";
 import { loginController } from "./controller/loginController.mjs";
-import { userController } from "./controller/userCotroller.mjs"
+import { userController } from "./controller/userController.mjs"
 import { decodeToken } from "./utils/token.mjs";
 import { usersList } from "./data/usersList.mjs";
 
@@ -24,10 +24,10 @@ app.use((req, _, next) => {
   }
   next();
 });
-
-app.post("/login", loginController);
-app.post("/register", registerController);
-app.get("/home", userController)
+app.get("/api/")
+app.post("/api/login", loginController);
+app.post("/api/register", registerController);
+app.get("/api/home", userController)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

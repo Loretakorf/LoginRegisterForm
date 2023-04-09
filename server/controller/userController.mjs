@@ -1,6 +1,6 @@
 import { usersList } from "../data/usersList.mjs";
 
-export const listController = (req, res) => {
+export const userController = (req, res) => {
   if (!req.user) {
     res.status(403).json({ message: "User not logged in" });
     return;

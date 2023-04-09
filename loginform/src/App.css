@@ -17,6 +17,9 @@ a {
   font-size: 36px;
   font-weight: 600;
 }
+button {
+  margin-top: 40px;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
