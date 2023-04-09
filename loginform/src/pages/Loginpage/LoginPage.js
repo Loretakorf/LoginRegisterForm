@@ -4,7 +4,9 @@ import { loginUser } from "../../helpers/loginUser";
 import { Box, CircularProgress } from "@mui/material";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
-const LoginPage = () => {
+
+
+const LoginPage = ({onLogin}) => {
   const {
     register,
     isValid,
@@ -21,12 +23,13 @@ const LoginPage = () => {
     }
     try {
       setLoading(true);
-      await loginUser({
+    const response =  await loginUser({
         email: formdata.email,
         password: formdata.password,
       });
-
+      onLogin(response.token);
       setError(null);
+    
     } catch (error) {
       setError("Failed to register user");
     }
