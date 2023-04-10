@@ -3,7 +3,6 @@ const Input = ({ placeholder, type, errors, disabled, id, name, register }) => {
     <div className="input-container">
       <input
         required
-        
         placeholder={placeholder}
         {...register(name)}
         type={type}

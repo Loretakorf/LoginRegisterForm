@@ -2,10 +2,10 @@
 
 export const routes = {
   
-  defaultPage: "/api/",
-  homePage: "/api/home",
-  registerPage: "/api/register",
-  loginPage: "api//login",
+  defaultPage: "/",
+  homePage: "/home",
+  registerPage: "/register",
+  loginPage: "/login",
 };
 
 

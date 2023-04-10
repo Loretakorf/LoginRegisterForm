@@ -6,6 +6,15 @@ import LoginPage from "../Loginpage/LoginPage";
 import { registerUser } from "../../helpers/registerUser";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup
+  .object({
+    firstName: yup.string().required(),
+    age: yup.number().positive().integer().required(),
+  })
+  .required();
 
 const RegisterPage = () => {
   const {
@@ -14,11 +23,7 @@ const RegisterPage = () => {
     isValid,
     formState: errors,
   } = useForm({
-    email: "",
-    password: "",
-    passwordRepeat: "",
-    firstName: "",
-    lastName: "",
+    resolver: yupResolver(schema),
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -51,6 +56,7 @@ const RegisterPage = () => {
         password: formdata.password,
         firstName: formdata.firstName,
         lastName: formdata.lastName,
+        checkbox: formdata.checkbox,
       });
 
       setError(null);
@@ -77,13 +83,7 @@ const RegisterPage = () => {
                     name="email"
                     type="email"
                     placeholder="Email"
-                    {...register("email", {
-                      required: "Required",
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "invalid email address",
-                      },
-                    })}
+                    register={register}
                     message="Email is required"
                     disable={isValid}
                   />
@@ -94,15 +94,7 @@ const RegisterPage = () => {
                     name="password"
                     type="password"
                     placeholder="Password"
-                    {...register("password", {
-                      required: "Required",
-                      pattern: {
-                        value:
-                          /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
-                        message:
-                          "Password requirements: 8-20 characters, 1 number, 1 letter, 1 symbol.",
-                      },
-                    })}
+                    register={register}
                     disable={isValid}
                   />
                   {errors.password && <p>{errors.password.message}</p>}
