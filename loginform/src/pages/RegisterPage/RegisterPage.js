@@ -11,10 +11,17 @@ import * as yup from "yup";
 
 const schema = yup
   .object({
+    email: yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+    password: yup.string().required(),
+    passworRepeat: yup.string().required(),
     firstName: yup.string().required(),
-    age: yup.number().positive().integer().required(),
-  })
-  .required();
+    lastName: yup.string().required(),
+})
+   
+   
+
 
 const RegisterPage = () => {
   const {
