@@ -20,7 +20,7 @@ const schemaA = yup.object({
 const schemaB = yup.object({
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
-  checkbox: yup.boolean,
+  checkbox: yup.boolean ("I accept terms and conditions"),
 });
 
 const schemaStep = (step) => {
@@ -41,7 +41,6 @@ const RegisterPage = () => {
   const {
     register,
     handleSubmit,
-    isValid,
     formState: errors,
   } = useForm({
     resolver: yupResolver(schemaStep(step)),
@@ -105,7 +104,7 @@ const RegisterPage = () => {
                     placeholder="Email"
                     register={register}
                     message="Email is required"
-                    disable={isValid}
+                   
                   />
                   {errors.email && <p>{errors.email.message}</p>}
                   <Input
@@ -115,7 +114,7 @@ const RegisterPage = () => {
                     type="password"
                     placeholder="Password"
                     register={register}
-                    disable={isValid}
+                    message="Password is required"
                   />
                   {errors.password && <p>{errors.password.message}</p>}
                   <Input
@@ -126,7 +125,7 @@ const RegisterPage = () => {
                     placeholder="Password(repeat)"
                     register={register}
                     message="Password must mutch"
-                    disable={isValid}
+                   
                   />
                   {errors.passwordRepeat && (
                     <p>{errors.passwordRepeat.message}</p>
@@ -145,7 +144,7 @@ const RegisterPage = () => {
                     type="text"
                     register={register}
                     message="First name is required"
-                    disable={isValid}
+                    
                   />
                   {errors.firstName && <p>{errors.firstName.message}</p>}
                   <Input
@@ -156,7 +155,7 @@ const RegisterPage = () => {
                     type="text"
                     register={register}
                     message="Last name is required"
-                    disable={isValid}
+                   
                   />
                   {errors.lastName && <p>{errors.lastName.message}</p>}
                   <Input
