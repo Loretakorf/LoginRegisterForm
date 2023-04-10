@@ -9,32 +9,45 @@ import Button from "../../components/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-const schema = yup
-  .object({
-    email: yup.string()
+const schemaA = yup.object({
+  email: yup
+    .string()
     .email("Invalid email address")
     .required("Email is required"),
-    password: yup.string().required(),
-    passworRepeat: yup.string().required(),
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-})
-   
-   
+  password: yup.string().required("Password is required"),
+  passworRepeat: yup.string().required("Repeat password pleace"),
+});
+const schemaB = yup.object({
+  firstName: yup.string().required("First name is required"),
+  lastName: yup.string().required("Last name is required"),
+  checkbox: yup.boolean,
+});
 
+const schemaStep = (step) => {
+  if (step === 0) {
+    return {
+      resolver: yupResolver(schemaA),
+    };
+  }
+  if (step === 1) {
+    return {
+      resolver: yupResolver(schemaB),
+    };
+  }
+};
 
 const RegisterPage = () => {
+  const [step, setStep] = useState(0);
   const {
     register,
     handleSubmit,
     isValid,
     formState: errors,
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schemaStep(step)),
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [step, setStep] = useState(0);
 
   const [success, setSuccess] = useState(false);
 
@@ -155,9 +168,11 @@ const RegisterPage = () => {
 
                   <Button onClick={() => setStep(step - 1)} label={"Back"} />
 
-                  <Button type="submit" label={"Submit"}>
-                    {loading ? <CircularProgress /> : "Submit"}
-                  </Button>
+                  {loading ? (
+                    <CircularProgress />
+                  ) : (
+                    <Button type="submit" label={"Submit"}></Button>
+                  )}
                 </Box>
               )}
             </form>

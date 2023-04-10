@@ -1,4 +1,4 @@
-import { routes } from "../constants/routes";
+import {  routes } from "../constants/routes";
 
 export const registerUser = (user) => {
     return fetch(routes.registerPage, {
