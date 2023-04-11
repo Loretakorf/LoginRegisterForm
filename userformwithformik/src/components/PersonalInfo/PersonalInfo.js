@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import Input from "../Input/Input";
-import CircularProgress from "@mui/material";
+
 const PersonalInfo = ({ formik, step, setStep, loading }) => {
   return (
     <div>
@@ -40,7 +40,7 @@ const PersonalInfo = ({ formik, step, setStep, loading }) => {
       <div>
         <Button label="Back" onClick={() => setStep(step - 1)} />
         <Button type="submit">
-          {loading ? <CircularProgress /> : "Submit"}
+          {loading ?  <p>...loading</p> : "Submit"}
         </Button>
       </div>
     </div>

@@ -124,8 +124,8 @@ const RegisterPage = () => {
           <Heading title="Register form" />
           <div className="container">
             <form className="form" onSubmit={formik.handleSubmit}>
-             { step === 0 && <SignUpInfo formik={formik}/>}
-             { step === 1 && <PersonalInfo formik={formik}/>}
+             { step === 0 ? <SignUpInfo formik={formik}/> : <PersonalInfo formik={formik}/>}
+            
             
             </form>
             {loading && <p>...loading</p>}

@@ -10,35 +10,35 @@ import { yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup";
 
 
-const schemaA = yup.object({
-  email: yup
-  .string().required("Email address is required"),
-  password: yup
-  .string().min(6).max(15).required("Enter password please"),
-  passworRepeat: yup
-  .string().min(6).max(15).required("Repeat password please"),
-});
-const schemaB = yup.object({
-  firstName: yup
-  .string().min(2).required("First name is required"),
-  lastName: yup
-  .string().min(2).required("Last name is required"),
-  checkbox: yup
-  .boolean ("I accept terms and conditions"),
-}).required();
+// const schemaA = yup.object({
+//   email: yup
+//   .string().required("Email address is required"),
+//   password: yup
+//   .string().min(6).max(15).required("Enter password please"),
+//   passworRepeat: yup
+//   .string().min(6).max(15).required("Repeat password please"),
+// });
+// const schemaB = yup.object({
+//   firstName: yup
+//   .string().min(2).required("First name is required"),
+//   lastName: yup
+//   .string().min(2).required("Last name is required"),
+//   checkbox: yup
+//   .boolean ("I accept terms and conditions"),
+// }).required();
 
-const schemaStep = (step) => {
-  if (step === 0) {
-    return {
-      resolver: yupResolver(schemaA),
-    };
-  }
-  if (step === 1) {
-    return {
-      resolver: yupResolver(schemaB),
-    };
-  }
-};
+// const schemaStep = (step) => {
+//   if (step === 0) {
+//     return {
+//       resolver: yupResolver(schemaA),
+//     };
+//   }
+//   if (step === 1) {
+//     return {
+//       resolver: yupResolver(schemaB),
+//     };
+//   }
+// };
 
 const RegisterPage = () => {
   const [step, setStep] = useState(0);
@@ -46,8 +46,8 @@ const RegisterPage = () => {
     register,
     handleSubmit,
     formState: errors,
-  } = useForm({
-    resolver: yupResolver(schemaStep(step)),
+  } = useForm({ email:"", password: "", passwordRepeat:"", firstName:"", lastName: "" 
+    // resolver: yupResolver(schemaStep(step)),
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

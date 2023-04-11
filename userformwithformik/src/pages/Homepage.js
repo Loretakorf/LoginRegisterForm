@@ -3,11 +3,11 @@ import Heading from "../components/Heading/Heading";
 import { getFormData } from "../servises/getFormData";
 
 const HomePage = () => {
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState();
   const handleUsersLoad = async () => {
     try {
       const data = await getFormData();
-      setUsers(data);
+      setUser(data);
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -22,13 +22,13 @@ const HomePage = () => {
     <section>
       <Heading title="User information" />
 
-      {users.map(({ _id, email, firstName, lastName }) => (
-        <div className="flex" key={_id}>
-          <h2>Email: {email}</h2>
-          <h2>First Name: {firstName}</h2>
-          <h2>Last Name: {lastName}</h2>
+      
+        <div className="flex" >
+          <h2>Email: {user.email}</h2>
+          <h2>First Name: {user.firstName}</h2>
+          <h2>Last Name: {user.lastName}</h2>
         </div>
-      ))}
+     
     </section>
   );
 };
