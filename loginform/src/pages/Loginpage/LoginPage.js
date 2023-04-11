@@ -5,14 +5,23 @@ import { Box, CircularProgress } from "@mui/material";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
 import HomePage from "../Homepage/Homepage";
+import { yupResolver} from "@hookform/resolvers/yup"
+import * as yup from "yup";
+
+const schema = yup.object({
+  email: yup
+  .string().required("Email address is required"),
+  password: yup
+  .string().min(6).max(15).required("Enter password please"),
+})
 
 const LoginPage = ({ onLogin, token }) => {
   const {
     register,
-    isValid,
+    
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm( yupResolver(schema));
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -50,7 +59,7 @@ const LoginPage = ({ onLogin, token }) => {
               placeholder="Email"
               register={register}
               message="Email is required"
-              disable={isValid}
+             
             />
             {errors.email && <p>{errors.email.message}</p>}
             <Input
@@ -61,7 +70,7 @@ const LoginPage = ({ onLogin, token }) => {
               placeholder="Password"
               register={register}
               message="Password must have minimum six letters"
-              disable={isValid}
+              
             />
             {errors.password && <p>{errors.password.message}</p>}
             <Button type="submit" label={"Login"} />
