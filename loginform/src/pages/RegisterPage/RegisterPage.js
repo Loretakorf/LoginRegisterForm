@@ -6,36 +6,36 @@ import LoginPage from "../Loginpage/LoginPage";
 import { registerUser } from "../../helpers/registerUser";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { zodResolver} from "@hookform/resolvers/zod"
+// import * as yup from "yup";
+import { z } from "zod"
 
-
-const schemaA = yup.object({
-  email: yup
+const schemaA = z.object({
+  email: z
   .string().required("Email address is required"),
-  password: yup
+  password: z
   .string().min(6).max(15).required("Enter password please"),
-  passworRepeat: yup
+  passworRepeat: z
   .string().min(6).max(15).required("Repeat password please"),
 });
-const schemaB = yup.object({
-  firstName: yup
+const schemaB = z.object({
+  firstName: z
   .string().min(2).required("First name is required"),
-  lastName: yup
+  lastName: z
   .string().min(2).required("Last name is required"),
-  checkbox: yup
+  checkbox: z
   .boolean ("I accept terms and conditions"),
 }).required();
 
 const schemaStep = (step) => {
   if (step === 0) {
     return {
-      resolver: yupResolver(schemaA),
+      resolver: zodResolver(schemaA),
     };
   }
   if (step === 1) {
     return {
-      resolver: yupResolver(schemaB),
+      resolver: zodResolver(schemaB),
     };
   }
 };
@@ -47,7 +47,7 @@ const RegisterPage = () => {
     handleSubmit,
     formState: errors,
   } = useForm({
-    resolver: yupResolver(schemaStep(step)),
+    resolver: zodResolver(schemaStep(step)),
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
