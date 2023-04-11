@@ -14,14 +14,14 @@ const schemaA = yup.object({
     .string()
     .email("Invalid email address")
     .required("Email is required"),
-  password: yup.string().required("Password is required"),
-  passworRepeat: yup.string().required("Repeat password pleace"),
-});
+  password: yup.string().min(6).max(15).required("Password is required"),
+  passworRepeat: yup.string().min(6).max(15).required("Repeat password pleace"),
+}).required();
 const schemaB = yup.object({
-  firstName: yup.string().required("First name is required"),
-  lastName: yup.string().required("Last name is required"),
+  firstName: yup.string().min(2).required("First name is required"),
+  lastName: yup.string().min(2).required("Last name is required"),
   checkbox: yup.boolean ("I accept terms and conditions"),
-});
+}).required();
 
 const schemaStep = (step) => {
   if (step === 0) {
@@ -49,6 +49,7 @@ const RegisterPage = () => {
   const [error, setError] = useState(null);
 
   const [success, setSuccess] = useState(false);
+ 
 
   const onSubmit = async (formdata) => {
     if (step === 0 && formdata.email && formdata.password) {
@@ -77,7 +78,7 @@ const RegisterPage = () => {
         lastName: formdata.lastName,
         checkbox: formdata.checkbox,
       });
-
+      console.log(formdata.email);
       setError(null);
       setSuccess(true);
     } catch (error) {
@@ -85,6 +86,7 @@ const RegisterPage = () => {
     }
     setLoading(false);
   };
+  
   return (
     <div className="main">
       {success ? (
@@ -106,7 +108,7 @@ const RegisterPage = () => {
                     message="Email is required"
                    
                   />
-                  {errors.email && <p>{errors.email.message}</p>}
+                  {errors.email && <p>{errors.email?.message}</p>}
                   <Input
                     required
                     id="password"
@@ -116,7 +118,7 @@ const RegisterPage = () => {
                     register={register}
                     message="Password is required"
                   />
-                  {errors.password && <p>{errors.password.message}</p>}
+                  {errors.password && <p>{errors.password?.message}</p>}
                   <Input
                     required
                     id="passwordRepeat"
@@ -128,7 +130,7 @@ const RegisterPage = () => {
                    
                   />
                   {errors.passwordRepeat && (
-                    <p>{errors.passwordRepeat.message}</p>
+                    <p>{errors.passwordRepeat?.message}</p>
                   )}
                   <Button onClick={() => setStep(step + 1)} label="Next" />
                 </Box>
@@ -146,7 +148,7 @@ const RegisterPage = () => {
                     message="First name is required"
                     
                   />
-                  {errors.firstName && <p>{errors.firstName.message}</p>}
+                  {errors.firstName && <p>{errors.firstName?.message}</p>}
                   <Input
                     required
                     id="lastName"
@@ -157,7 +159,7 @@ const RegisterPage = () => {
                     message="Last name is required"
                    
                   />
-                  {errors.lastName && <p>{errors.lastName.message}</p>}
+                  {errors.lastName && <p>{errors.lastName?.message}</p>}
                   <Input
                     type="checkbox"
                     name={"checkbox"}

@@ -7,7 +7,7 @@ const Input = ({ placeholder, type, errors, disabled, id, name, register }) => {
         {...register(name)}
         type={type}
         id={id}
-        error={errors}
+        errors={errors}
         disabled={disabled}
       />
     </div>

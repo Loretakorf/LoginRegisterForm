@@ -14,5 +14,6 @@ export const userController = (req, res) => {
     email: req.user.email,
     firstName: req.user.firstName,
     lastName: req.user.lastName,
+    checkbox: req.user.checkbox
   });
 };
