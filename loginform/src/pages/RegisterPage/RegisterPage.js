@@ -9,18 +9,22 @@ import Button from "../../components/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+
 const schemaA = yup.object({
   email: yup
-    .string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: yup.string().min(6).max(15).required("Password is required"),
-  passworRepeat: yup.string().min(6).max(15).required("Repeat password pleace"),
-}).required();
+  .string().required("Email address is required"),
+  password: yup
+  .string().min(6).max(15).required("Enter password please"),
+  passworRepeat: yup
+  .string().min(6).max(15).required("Repeat password please"),
+});
 const schemaB = yup.object({
-  firstName: yup.string().min(2).required("First name is required"),
-  lastName: yup.string().min(2).required("Last name is required"),
-  checkbox: yup.boolean ("I accept terms and conditions"),
+  firstName: yup
+  .string().min(2).required("First name is required"),
+  lastName: yup
+  .string().min(2).required("Last name is required"),
+  checkbox: yup
+  .boolean ("I accept terms and conditions"),
 }).required();
 
 const schemaStep = (step) => {
@@ -105,7 +109,7 @@ const RegisterPage = () => {
                     type="email"
                     placeholder="Email"
                     register={register}
-                    message="Email is required"
+                   
                    
                   />
                   {errors.email && <p>{errors.email?.message}</p>}
@@ -116,7 +120,7 @@ const RegisterPage = () => {
                     type="password"
                     placeholder="Password"
                     register={register}
-                    message="Password is required"
+                   
                   />
                   {errors.password && <p>{errors.password?.message}</p>}
                   <Input
@@ -126,7 +130,7 @@ const RegisterPage = () => {
                     type="password"
                     placeholder="Password(repeat)"
                     register={register}
-                    message="Password must mutch"
+                   
                    
                   />
                   {errors.passwordRepeat && (
@@ -145,7 +149,7 @@ const RegisterPage = () => {
                     placeholder="First name"
                     type="text"
                     register={register}
-                    message="First name is required"
+                   
                     
                   />
                   {errors.firstName && <p>{errors.firstName?.message}</p>}
@@ -156,7 +160,7 @@ const RegisterPage = () => {
                     placeholder="Last name"
                     type="text"
                     register={register}
-                    message="Last name is required"
+                   
                    
                   />
                   {errors.lastName && <p>{errors.lastName?.message}</p>}
