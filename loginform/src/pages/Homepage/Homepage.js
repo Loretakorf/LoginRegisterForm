@@ -6,7 +6,7 @@ import { getUser } from "../../helpers/getUser";
 import { useNavigate, Navigate } from "react-router-dom";
 
 const HomePage = ({ onLogout, token }) => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
