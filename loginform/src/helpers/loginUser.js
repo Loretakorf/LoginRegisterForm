@@ -1,7 +1,7 @@
-import {  routes } from "../constants/routes";
+import {  LOGIN } from "../constants/routes";
 
 export const loginUser = (user) => {
-    return fetch(routes.loginPage, {
+    return fetch(LOGIN, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

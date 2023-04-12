@@ -1,10 +1,10 @@
-import {  routes } from "../constants/routes";
+import {  HOME } from "../constants/routes";
 import Cookies from "js-cookie";
 
 export const getUser = () => {
   const token = Cookies.get("_todo_token");
 
-  return fetch(routes.homePage, {
+  return fetch(HOME, {
     headers: {
       token,
     },

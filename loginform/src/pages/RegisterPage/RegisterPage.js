@@ -6,17 +6,53 @@ import LoginPage from "../Loginpage/LoginPage";
 import { registerUser } from "../../helpers/registerUser";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
-import { yupResolver} from "@hookform/resolvers/yup"
-import * as yup from "yup";
+// import { yupResolver} from "@hookform/resolvers/yup"
+// import * as yup from "yup";
 
+// const YupValidationResolver = (schema) =>
+// useCallback(
+//   async data => {
+//     try {
+//       const values = await schema.validate(data,{
+//         abortEarly: false
+//       });
+//       // const values1 = await schemaB.validate(data,{
+//       //   abortEarly: false
+//       // });
 
-// const schemaA = yup.object({
+//       return {
+//         values,
+//         // values1,
+//         errors: {}
+//       };
+//     } catch (errors) {
+//       return {
+//         values: {},
+//         values1: {},
+//         errors: errors.inner.reduce(
+//           (allErrors, currentError) => ({
+//             ...allErrors,
+//             [currentError.path]: {
+//               type: currentError.type ?? "validation",
+//               message: currentError.message
+//             }
+//           }),
+//           {}
+//         )
+//       }
+//     }
+//   },
+//   [schema]
+// )
+
+// const schema = yup.object().shape({
 //   email: yup
 //   .string().required("Email address is required"),
 //   password: yup
 //   .string().min(6).max(15).required("Enter password please"),
 //   passworRepeat: yup
 //   .string().min(6).max(15).required("Repeat password please"),
+
 // });
 // const schemaB = yup.object({
 //   firstName: yup
@@ -30,30 +66,35 @@ import * as yup from "yup";
 // const schemaStep = (step) => {
 //   if (step === 0) {
 //     return {
-//       resolver: yupResolver(schemaA),
+//       resolver: YupValidationResolver(schemaA),
 //     };
 //   }
 //   if (step === 1) {
 //     return {
-//       resolver: yupResolver(schemaB),
+//       resolver: YupValidationResolver(schemaB),
 //     };
 //   }
 // };
 
 const RegisterPage = () => {
   const [step, setStep] = useState(0);
+  // const resolver = YupValidationResolver(schemaStep)
   const {
     register,
     handleSubmit,
     formState: errors,
-  } = useForm({ email:"", password: "", passwordRepeat:"", firstName:"", lastName: "" 
-    // resolver: yupResolver(schemaStep(step)),
+  } = useForm({
+    email: "",
+    password: "",
+    passwordRepeat: "",
+    firstName: "",
+    lastName: "",
+  //  resolver: yupResolver(schema)
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const [success, setSuccess] = useState(false);
- 
 
   const onSubmit = async (formdata) => {
     if (step === 0 && formdata.email && formdata.password) {
@@ -90,7 +131,7 @@ const RegisterPage = () => {
     }
     setLoading(false);
   };
-  
+
   return (
     <div className="main">
       {success ? (
@@ -108,9 +149,8 @@ const RegisterPage = () => {
                     name="email"
                     type="email"
                     placeholder="Email"
-                    register={register}
-                   
-                   
+                    errors={"Email Address is required"}
+                   register={register}
                   />
                   {errors.email && <p>{errors.email?.message}</p>}
                   <Input
@@ -119,8 +159,8 @@ const RegisterPage = () => {
                     name="password"
                     type="password"
                     placeholder="Password"
-                    register={register}
-                   
+                    errors={"Password is required"}
+                    
                   />
                   {errors.password && <p>{errors.password?.message}</p>}
                   <Input
@@ -129,16 +169,15 @@ const RegisterPage = () => {
                     name="passwordRepeat"
                     type="password"
                     placeholder="Password(repeat)"
-                    register={register}
-                   
-                   
+                    errors={"Repeat Password please"}
+                   register={register}
                   />
                   {errors.passwordRepeat && (
                     <p>{errors.passwordRepeat?.message}</p>
                   )}
                   <Button onClick={() => setStep(step + 1)} label="Next" />
                 </Box>
-              )}
+              ) }
 
               {step === 1 && (
                 <Box display="flex" flexDirection="column" gap={3}>
@@ -149,8 +188,8 @@ const RegisterPage = () => {
                     placeholder="First name"
                     type="text"
                     register={register}
-                   
-                    
+                    errors={"First Name is required"}
+                  
                   />
                   {errors.firstName && <p>{errors.firstName?.message}</p>}
                   <Input
@@ -159,9 +198,8 @@ const RegisterPage = () => {
                     name="lastName"
                     placeholder="Last name"
                     type="text"
-                    register={register}
-                   
-                   
+                    errors={"Last Name is required"}
+                   register={register}
                   />
                   {errors.lastName && <p>{errors.lastName?.message}</p>}
                   <Input
