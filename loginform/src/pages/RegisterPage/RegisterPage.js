@@ -47,16 +47,19 @@ import { useNavigate } from "react-router-dom";
 // )
 
 const schemaA = yup.object({
-  email: yup.string().required("Email address is required"),
-  password: yup.string().min(6).max(15).required("Enter password please"),
-  passworRepeat: yup.string()
-  .oneOf([yup.ref("password")], "Passwords must match")
-  .min(6).max(15).required("Repeat password please"),
+  email: yup.string().matches(/^(?!.*@[^,]*,)/,{ message: "Email address is required"}).required(),
+  password: yup.string().min(6).max(15).matches(/\d+/, { message: { number: "Password no number" } }).required("Enter password please"),
+  passworRepeat: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .min(6)
+    .max(15)
+    .required({ message: "Repeat password"}),
 });
 const schemaB = yup
   .object({
-    firstName: yup.string().min(2).required("First name is required"),
-    lastName: yup.string().min(2).required("Last name is required"),
+    firstName: yup.string().min(2).required({ message:"First name is required"}),
+    lastName: yup.string().min(2).required({message: "Last name is required"}),
     checkbox: yup.boolean("I accept terms and conditions"),
   })
   .required();
@@ -84,11 +87,9 @@ const RegisterPage = () => {
   } = useForm(schemaStep(step));
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-
- 
 
   const onSubmit = async (formdata) => {
     if (step === 0 && formdata.email && formdata.password) {
@@ -96,10 +97,7 @@ const RegisterPage = () => {
 
       setLoading(false);
     }
-    if (formdata.password !== formdata.passwordRepeat) {
-      setError(error);
-      return;
-    }
+
     if (
       step === 1 &&
       formdata.firstName &&
@@ -108,7 +106,7 @@ const RegisterPage = () => {
     ) {
       setLoading(true);
     }
-  
+
     try {
       setLoading(true);
       await registerUser({
@@ -120,8 +118,8 @@ const RegisterPage = () => {
       });
 
       setError("");
-      navigate("/login", { replace: true})
-      setStep(1)
+      navigate("/login", { replace: true });
+      setStep(1);
       setSuccess(true);
     } catch (error) {
       setError("Failed to register user");
@@ -148,7 +146,6 @@ const RegisterPage = () => {
                     placeholder="Email"
                     errors={errors}
                     register={register}
-                   
                   />
                   {errors.email && <p>{errors.email?.message}</p>}
                   <Input
@@ -159,7 +156,6 @@ const RegisterPage = () => {
                     placeholder="Password"
                     errors={errors}
                     register={register}
-                   
                   />
                   {errors.password && <p>{errors.password?.message}</p>}
                   <Input
@@ -170,11 +166,8 @@ const RegisterPage = () => {
                     placeholder="Password(repeat)"
                     errors={errors}
                     register={register}
-                    
                   />
-                  {errors.passwordRepeat && (
-                    <p>{errors.passwordRepeat?.message}</p>
-                  )}
+                  {errors.passwordRepeat && <p>{errors.passwordRepeat?.message}</p>}
                   <Button onClick={() => setStep(step + 1)} label="Next" />
                 </Box>
               )}
@@ -189,7 +182,6 @@ const RegisterPage = () => {
                     type="text"
                     register={register}
                     errors={errors}
-                    
                   />
                   {errors.firstName && <p>{errors.firstName?.message}</p>}
                   <Input
@@ -200,7 +192,6 @@ const RegisterPage = () => {
                     type="text"
                     errors={errors}
                     register={register}
-                  
                   />
                   {errors.lastName && <p>{errors.lastName?.message}</p>}
                   <Input
@@ -209,7 +200,6 @@ const RegisterPage = () => {
                     errors={errors}
                     register={register}
                     label="I accept terms and conditions"
-                   
                   />
 
                   <Button onClick={() => setStep(step - 1)} label={"Back"} />
