@@ -8,7 +8,7 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 // const YupValidationResolver = (schema) =>
 // useCallback(
@@ -89,7 +89,7 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const onSubmit = async (formdata) => {
     if (step === 0 && formdata.email && formdata.password) {
@@ -118,7 +118,7 @@ const RegisterPage = () => {
       });
 
       setError("");
-      navigate("/login", { replace: true });
+      // navigate("/login", { replace: true });
       setStep(1);
       setSuccess(true);
     } catch (error) {
