@@ -50,25 +50,25 @@ import { routes } from "../../constants/routes";
 const schemaA = yup.object({
   email: yup
     .string()
-    .matches(/^(?!.*@[^,]*,)/, "Email address is required")
+    .matches(/^(?!.*@[^,]*,)/, { message:"Email address is required"})
     .required(),
   password: yup
     .string()
     .min(6)
     .max(15)
     .matches(/\d+/)
-    .required("Enter password please"),
+    .required({message :"Enter password please"}),
   passworRepeat: yup
     .string()
-    .oneOf([yup.ref("password")], "Passwords must match")
+    .oneOf([yup.ref("password")], { message:"Passwords must match"})
     .min(6)
     .max(15)
-    .required("Repeat password"),
+    .required({message:"Repeat password"}),
 });
 const schemaB = yup
   .object({
-    firstName: yup.string().min(2).required("First name is required"),
-    lastName: yup.string().min(2).required("Last name is required"),
+    firstName: yup.string().min(2).required({ message: "First name is required"}),
+    lastName: yup.string().min(2).required({ message: "Last name is required"}),
     checkbox: yup.boolean("I accept terms and conditions"),
   })
   .required();
@@ -92,7 +92,7 @@ const RegisterPage = () => {
   const {
     register,
     handleSubmit,
-
+   
     formState: errors,
   } = useForm(schemaStep(step));
 
@@ -105,11 +105,7 @@ const RegisterPage = () => {
   // }
 
   const onSubmit = async (formdata) => {
-    if (step === 0 && formdata.email && formdata.password) {
-      setStep(1);
-
-      setLoading(false);
-    }
+  
 
     if (
       step === 1 &&
@@ -129,7 +125,7 @@ const RegisterPage = () => {
         lastName: formdata.lastName,
         checkbox: formdata.checkbox,
       });
-
+     
       setError(null);
       navigate(routes.loginPage, { replace: true });
       setStep(1);

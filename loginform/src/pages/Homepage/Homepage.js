@@ -6,8 +6,8 @@ import { getUser } from "../../helpers/getUser";
 import { useNavigate, Navigate } from "react-router-dom";
 
 const HomePage = ({ onLogout, token }) => {
-  const [user, setUser] = useState([]);
-  const [error, setError] = useState(false);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -17,9 +17,9 @@ const HomePage = ({ onLogout, token }) => {
   };
 
   const getUserInfo = async () => {
-    if (!token) {
-      return <Navigate to="/login" />;
-    }
+    // if (!token) {
+    //   return <Navigate to="/login" />;
+    // }
 
     try {
       setLoading(true);
@@ -34,19 +34,24 @@ const HomePage = ({ onLogout, token }) => {
   };
 
   useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
     getUserInfo();
-  });
+  }, [token]);
 
   return (
     <div>
       <Heading title={"Your acccount information"} />
       {loading && <CircularProgress />}
-      <Box display="flex" flexDirection="column" gap={3} marginTop={10}>
-        <p>Your Email: {user.email}</p>
-        <p>Your Name: {user.firstName}</p>
-        <p>Your LastName: {user.lastName}</p>
-        {error && <p>{error}</p>}
-      </Box>
+      {user && (
+        <Box display="flex" flexDirection="column" gap={3} marginTop={10}>
+          <p>Your Email: {user.email}</p>
+          <p>Your Name: {user.firstName}</p>
+          <p>Your LastName: {user.lastName}</p>
+          {error && <p>{error}</p>}
+        </Box>
+      )}
 
       <Button label="Log out" onClick={handleLogout} />
     </div>

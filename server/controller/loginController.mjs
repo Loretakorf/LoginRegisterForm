@@ -4,7 +4,7 @@ import { generateToken } from "../utils/token.mjs";
 
 
 export const loginController = async (req, res) => {
-   const { email, password } = req. body;
+   const { email, password } = req.body;
    const isEmailValid = typeof email === 'string';
    const isPasswordValid = typeof password === 'string';
 

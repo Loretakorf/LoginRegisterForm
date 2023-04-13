@@ -8,7 +8,7 @@ export const registerController = async (req, res) => {
   const isPassword = typeof password === "string" && password.length > 6;
   const isFirstName = typeof firstName === "string" && firstName.length > 2;
   const IsLastName = typeof lastName === "string" && lastName.length > 2;
-  const IsCheckBox = typeof checkbox === boolean
+  const IsCheckBox = typeof checkbox === "boolean"
 
   if (!isEmail || !isPassword || !isFirstName || !IsLastName || !IsCheckBox) {
     res.status(400).json({ message: "Bad register data" });
@@ -23,11 +23,11 @@ export const registerController = async (req, res) => {
   }
   const user = {
     _id: createId(),
-    email: email,
+    email,
     password: await hashPassword(password),
-    firstName: firstName,
-    lastName: lastName,
-    checkbox: checkbox
+    firstName,
+    lastName,
+    checkbox,
   };
 
   usersList.push(user);

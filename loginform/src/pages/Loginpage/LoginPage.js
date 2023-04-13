@@ -4,19 +4,24 @@ import { loginUser } from "../../helpers/loginUser";
 import { routes } from "../../constants/routes";
 import { Box, CircularProgress } from "@mui/material";
 import AssistWalkerIcon from "@mui/icons-material/AssistWalker";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
-import HomePage from "../Homepage/Homepage";
+
+import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 const schema = yup.object({
-  email: yup.string().required("Email address is required"),
-  password: yup.string().min(6).max(15).required("Enter password please"),
+  email: yup.string().required({ message: "Email address is required" }),
+  password: yup
+    .string()
+    .min(6)
+    .max(15)
+    .required({ message: "Enter password please" }),
 });
 
-const LoginPage = ({ onLogin, token }) => {
+const LoginPage = ({ onLogin, }) => {
   const {
     register,
     formState: { errors },
@@ -25,11 +30,10 @@ const LoginPage = ({ onLogin, token }) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
+   const navigate = useNavigate()
   const onSubmit = async (formdata) => {
-    if (formdata.password !== formdata.passwordRepeat) {
-      setError(error);
-      return;
-    }
+    console.log(formdata);
+   
     try {
       setLoading(true);
       const response = await loginUser({
@@ -38,17 +42,19 @@ const LoginPage = ({ onLogin, token }) => {
       });
       onLogin(response.token);
       setError(null);
+      navigate(routes.homePage)
     } catch (error) {
       setError("Failed to register user");
     }
+    
     setLoading(false);
   };
 
   return (
     <div>
-      {token ? (
-        <HomePage />
-      ) : (
+    
+      
+    
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box display="flex" flexDirection="column" gap={3} marginTop={18}>
             <Input
@@ -60,7 +66,11 @@ const LoginPage = ({ onLogin, token }) => {
               register={register}
               errors={errors}
             />
-
+            <ErrorMessage
+              errors={errors}
+              name="email"
+              render={({ message }) => <p>{message}</p>}
+            />
             <Input
               required
               id="password"
@@ -70,6 +80,11 @@ const LoginPage = ({ onLogin, token }) => {
               register={register}
               errors={errors}
             />
+            <ErrorMessage
+              errors={errors}
+              name="password"
+              render={({ message }) => <p>{message}</p>}
+            />
             {loading ? (
               <CircularProgress />
             ) : (
@@ -77,8 +92,8 @@ const LoginPage = ({ onLogin, token }) => {
             )}
           </Box>
         </form>
-      )}
-       <Box display="flex" gap={3} marginTop={14}>
+     
+      <Box display="flex" gap={3} marginTop={14}>
         <AssistWalkerIcon fontSize="large" />
         <Link to={routes.registerPage}>Register</Link>
       </Box>
