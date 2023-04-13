@@ -10,6 +10,7 @@ const Input = ({ placeholder, type, errors, disabled, id, name, register }) => {
         errors={errors}
         disabled={disabled}
       />
+      <div>{errors[name] ? <p>{errors[name].message}</p> : <div></div>}</div>
     </div>
   );
 };

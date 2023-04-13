@@ -1,27 +1,27 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { loginUser } from "../../helpers/loginUser";
+import { routes } from "../../constants/routes";
 import { Box, CircularProgress } from "@mui/material";
+import AssistWalkerIcon from "@mui/icons-material/AssistWalker";
+import { Link } from "react-router-dom";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
 import HomePage from "../Homepage/Homepage";
-import { yupResolver} from "@hookform/resolvers/yup"
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 const schema = yup.object({
-  email: yup
-  .string().required("Email address is required"),
-  password: yup
-  .string().min(6).max(15).required("Enter password please"),
-})
+  email: yup.string().required("Email address is required"),
+  password: yup.string().min(6).max(15).required("Enter password please"),
+});
 
 const LoginPage = ({ onLogin, token }) => {
   const {
     register,
-    
     formState: { errors },
     handleSubmit,
-  } = useForm( yupResolver(schema));
+  } = useForm({ resolver: yupResolver(schema) });
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -58,10 +58,9 @@ const LoginPage = ({ onLogin, token }) => {
               type="email"
               placeholder="Email"
               register={register}
-              message="Email is required"
-             
+              errors={errors}
             />
-            {errors.email && <p>{errors.email.message}</p>}
+
             <Input
               required
               id="password"
@@ -69,15 +68,20 @@ const LoginPage = ({ onLogin, token }) => {
               type="password"
               placeholder="Password"
               register={register}
-              message="Password must have minimum six letters"
-              
+              errors={errors}
             />
-            {errors.password && <p>{errors.password.message}</p>}
-            <Button type="submit" label={"Login"} />
-            {loading && <CircularProgress />}
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Button type="submit" label={"Login"} />
+            )}
           </Box>
         </form>
       )}
+       <Box display="flex" gap={3} marginTop={14}>
+        <AssistWalkerIcon fontSize="large" />
+        <Link to={routes.registerPage}>Register</Link>
+      </Box>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 const WelcomePage = () => {
   return (
     <div>
-      <Heading title={"Welcome to our small ecosystem"} font-size="large"/>
+      <Heading title={"Welcome to our small world"} font-size="large"/>
       <Box display={"flex"} justifyContent={"center"} gap={10} paddingTop={5}>
       <Box display="flex" gap={3}>
         <AccessibilityNewIcon fontSize="large" />

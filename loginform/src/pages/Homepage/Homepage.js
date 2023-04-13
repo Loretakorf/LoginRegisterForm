@@ -42,9 +42,9 @@ const HomePage = ({ onLogout, token }) => {
       <Heading title={"Your acccount information"} />
       {loading && <CircularProgress />}
       <Box display="flex" flexDirection="column" gap={3} marginTop={10}>
-        <p label="Your Email: ">{user.email}</p>
-        <p label="Your Name: ">{user.firstName}</p>
-        <p label="Your LastName: ">{user.lastName}</p>
+        <p>Your Email: {user.email}</p>
+        <p>Your Name: {user.firstName}</p>
+        <p>Your LastName: {user.lastName}</p>
         {error && <p>{error}</p>}
       </Box>
 
