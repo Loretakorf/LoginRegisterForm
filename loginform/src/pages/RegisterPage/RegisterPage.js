@@ -2,7 +2,7 @@ import { Box, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Heading from "../../components/Heading/Heading";
 import { useState } from "react";
-
+import { ErrorMessage } from "@hookform/error-message";
 import { registerUser } from "../../helpers/registerUser";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
@@ -48,8 +48,16 @@ import { routes } from "../../constants/routes";
 // )
 
 const schemaA = yup.object({
-  email: yup.string().matches(/^(?!.*@[^,]*,)/, "Email address is required").required(),
-  password: yup.string().min(6).max(15).matches(/\d+/).required("Enter password please"),
+  email: yup
+    .string()
+    .matches(/^(?!.*@[^,]*,)/, "Email address is required")
+    .required(),
+  password: yup
+    .string()
+    .min(6)
+    .max(15)
+    .matches(/\d+/)
+    .required("Enter password please"),
   passworRepeat: yup
     .string()
     .oneOf([yup.ref("password")], "Passwords must match")
@@ -84,16 +92,17 @@ const RegisterPage = () => {
   const {
     register,
     handleSubmit,
+
     formState: errors,
   } = useForm(schemaStep(step));
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
- 
+
   const navigate = useNavigate();
-  const gotoLogin = () => {
-    navigate(routes.loginPage)
-  }
+  // const gotoLogin = () => {
+  //   navigate(routes.loginPage)
+  // }
 
   const onSubmit = async (formdata) => {
     if (step === 0 && formdata.email && formdata.password) {
@@ -124,100 +133,122 @@ const RegisterPage = () => {
       setError(null);
       navigate(routes.loginPage, { replace: true });
       setStep(1);
-     
     } catch (error) {
       setError("Failed to register user");
     }
+
     setLoading(false);
   };
 
   return (
     <div className="main">
-     
-        <section>
-          <Heading title="Register form" />
-          <div className="container">
-            <form className="form" onSubmit={handleSubmit(onSubmit)}>
-              {step === 0 && (
-                <Box display="flex" flexDirection="column" gap={3}>
-                  {error && <p>{error}</p>}
-                  <Input
-                    required
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    errors={errors}
-                    register={register}
-                  />
-                 
-                  <Input
-                    required
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    errors={errors}
-                    register={register}
-                  />
-                
-                  <Input
-                    required
-                    id="passwordRepeat"
-                    name="passwordRepeat"
-                    type="password"
-                    placeholder="Password(repeat)"
-                    errors={errors}
-                    register={register}
-                  />
-               
-                  <Button onClick={() => setStep(step + 1)} label="Next" />
-                </Box>
-              )}
+      <section>
+        <Heading title="Register form" />
+        <div className="container">
+          <form className="form" onSubmit={handleSubmit(onSubmit)}>
+            {step === 0 && (
+              <Box display="flex" flexDirection="column" gap={3}>
+                {error && <p>{error}</p>}
+                <Input
+                  required
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  errors={errors}
+                  register={register}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="email"
+                  render={({ message }) => <p>{message}</p>}
+                />
+                <Input
+                  required
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  errors={errors}
+                  register={register}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="password"
+                  render={({ message }) => <p>{message}</p>}
+                />
 
-              {step === 1 && (
-                <Box display="flex" flexDirection="column" gap={3}>
-                  <Input
-                    required
-                    id="firstName"
-                    name="firstName"
-                    placeholder="First name"
-                    type="text"
-                    register={register}
-                    errors={errors}
-                  />
-                 
-                  <Input
-                    required
-                    id="lastName"
-                    name="lastName"
-                    placeholder="Last name"
-                    type="text"
-                    errors={errors}
-                    register={register}
-                  />
-              
-                  <Input
-                    type="checkbox"
-                    name={"checkbox"}
-                    errors={errors}
-                    register={register}
-                    label="I accept terms and conditions"
-                  />
+                <Input
+                  required
+                  id="passwordRepeat"
+                  name="passwordRepeat"
+                  type="password"
+                  placeholder="Password(repeat)"
+                  errors={errors}
+                  register={register}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="passwordRepeat"
+                  render={({ message }) => <p>{message}</p>}
+                />
 
-                  <Button onClick={() => setStep(step - 1)} label={"Back"} />
+                <Button onClick={() => setStep(step + 1)} label="Next" />
+              </Box>
+            )}
 
-                  {loading ? (
-                    <CircularProgress />
-                  ) : (
-                    <Button type="submit" label={"Submit"} onClick={gotoLogin}></Button>
-                  )}
-                </Box>
-              )}
-            </form>
-          </div>
-        </section>
-      
+            {step === 1 && (
+              <Box display="flex" flexDirection="column" gap={3}>
+                <Input
+                  required
+                  id="firstName"
+                  name="firstName"
+                  placeholder="First name"
+                  type="text"
+                  register={register}
+                  errors={errors}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="sfirstNamet"
+                  render={({ message }) => <p>{message}</p>}
+                />
+
+                <Input
+                  required
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Last name"
+                  type="text"
+                  errors={errors}
+                  register={register}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="lastName"
+                  render={({ message }) => <p>{message}</p>}
+                />
+
+                <Input
+                  type="checkbox"
+                  name={"checkbox"}
+                  errors={errors}
+                  register={register}
+                  label="I accept terms and conditions"
+                />
+
+                <Button onClick={() => setStep(step - 1)} label={"Back"} />
+
+                {loading ? (
+                  <CircularProgress />
+                ) : (
+                  <Button type="submit" label={"Submit"}></Button>
+                )}
+              </Box>
+            )}
+          </form>
+        </div>
+      </section>
     </div>
   );
 };

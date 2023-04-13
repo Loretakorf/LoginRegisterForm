@@ -24,7 +24,7 @@ app.use((req, _, next) => {
   }
   next();
 });
-// app.get("/api/")
+
 app.post("/api/login", loginController);
 app.post("/api/register", registerController);
 app.get("/api/home", userController)

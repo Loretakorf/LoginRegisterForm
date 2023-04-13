@@ -1,3 +1,4 @@
+import { ErrorMessage } from "@hookform/error-message";
 const Input = ({ placeholder, type, errors, disabled, id, name, register }) => {
   return (
     <div className="input-container">
@@ -10,7 +11,19 @@ const Input = ({ placeholder, type, errors, disabled, id, name, register }) => {
         errors={errors}
         disabled={disabled}
       />
-      <div>{errors[name] ? <p>{errors[name].message}</p> : <div></div>}</div>
+      {/* <p>{errors[name].message}</p> */}
+
+      <div>
+        {errors[name] ? (
+          <ErrorMessage
+            errors={errors}
+            name={name}
+            render={({ message }) => <p>{message}</p>}
+          />
+        ) : (
+          <div></div>
+        )}
+      </div>
     </div>
   );
 };

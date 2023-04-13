@@ -10,7 +10,7 @@ export const registerController = async (req, res) => {
   const IsLastName = typeof lastName === "string" && lastName.length > 2;
   const IsCheckBox = typeof checkbox === boolean
 
-  if (!isEmail || !isPassword || !isFirstName || !IsLastName || IsCheckBox) {
+  if (!isEmail || !isPassword || !isFirstName || !IsLastName || !IsCheckBox) {
     res.status(400).json({ message: "Bad register data" });
     return;
   }
