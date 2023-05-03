@@ -5,7 +5,7 @@ html {
   min-height: 100vH;
 }
 body {
-  background-image: url("https://ecobnb.com/blog/app/uploads/sites/3/2021/09/Progetto-senza-titolo-5.jpg.webp");
+  background-image: url(./assets/SOF_8598.jpg);
   background-size: cover;
   /* background-position: center; */
   background-repeat: no-repeat;

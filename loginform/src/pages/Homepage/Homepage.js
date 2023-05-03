@@ -3,7 +3,7 @@ import Heading from "../../components/Heading/Heading";
 import { Box, CircularProgress } from "@mui/material";
 import Button from "../../components/Button";
 import { getUser } from "../../helpers/getUser";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = ({ onLogout, token }) => {
   const [user, setUser] = useState(null);
