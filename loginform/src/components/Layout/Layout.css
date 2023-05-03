@@ -9,22 +9,28 @@ input {
   border: none;
   border-bottom: 2px solid white;
   width: 400px;
-  height: 40px;
+  height: 30px;
   background-color: inherit;
+}
+input[type="checkbox"] {
+  height: 15px;
 }
 input::placeholder {
   color: white;
-  font-size: 24px;
+  font-size: 20px;
 }
 button {
   color: white;
   border: none;
   background-color: inherit;
-  font-weight: 600;
+  font-weight: 500;
 
-  font-size: 24px;
+  font-size: 28px;
 }
 p {
   font-size: 20px;
   font-weight: 500;
+}
+.red {
+  color: red;
 }

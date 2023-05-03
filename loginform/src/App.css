@@ -2,55 +2,29 @@
   text-align: center;
 }
 html {
-  min-height: 100vH;
+  min-height: 100vh;
 }
 body {
-  background-image: url(./assets/SOF_8598.jpg);
+  background-image: url(./assets/SOF_8501.jpg);
   background-size: cover;
-  /* background-position: center; */
+  background-position: center;
   background-repeat: no-repeat;
   color: white;
 }
 a {
   text-decoration: none;
   color: white;
-  font-size: 36px;
-  font-weight: 600;
+  font-size: 30px;
+  font-weight: 300;
 }
 button {
-  margin-top: 40px;
-}
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  margin-top: 20px;
+  align-self: flex-start;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
+
+

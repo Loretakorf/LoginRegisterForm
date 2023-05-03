@@ -50,25 +50,31 @@ import { routes } from "../../constants/routes";
 const schemaA = yup.object({
   email: yup
     .string()
-    .matches(/^(?!.*@[^,]*,)/, { message:"Email address is required"})
+    .matches(/^(?!.*@[^,]*,)/, { message: "Email address is required" })
     .required(),
   password: yup
     .string()
     .min(6)
     .max(15)
     .matches(/\d+/)
-    .required({message :"Enter password please"}),
+    .required({ message: "Enter password please" }),
   passworRepeat: yup
     .string()
-    .oneOf([yup.ref("password")], { message:"Passwords must match"})
+    .oneOf([yup.ref("password")], { message: "Passwords must match" })
     .min(6)
     .max(15)
-    .required({message:"Repeat password"}),
+    .required({ message: "Repeat password" }),
 });
 const schemaB = yup
   .object({
-    firstName: yup.string().min(2).required({ message: "First name is required"}),
-    lastName: yup.string().min(2).required({ message: "Last name is required"}),
+    firstName: yup
+      .string()
+      .min(2)
+      .required({ message: "First name is required" }),
+    lastName: yup
+      .string()
+      .min(2)
+      .required({ message: "Last name is required" }),
     checkbox: yup.boolean("I accept terms and conditions"),
   })
   .required();
@@ -92,7 +98,7 @@ const RegisterPage = () => {
   const {
     register,
     handleSubmit,
-   
+
     formState: errors,
   } = useForm(schemaStep(step));
 
@@ -100,13 +106,8 @@ const RegisterPage = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
-  // const gotoLogin = () => {
-  //   navigate(routes.loginPage)
-  // }
 
   const onSubmit = async (formdata) => {
-  
-
     if (
       step === 1 &&
       formdata.firstName &&
@@ -125,7 +126,7 @@ const RegisterPage = () => {
         lastName: formdata.lastName,
         checkbox: formdata.checkbox,
       });
-     
+
       setError(null);
       navigate(routes.loginPage, { replace: true });
       setStep(1);
@@ -143,8 +144,8 @@ const RegisterPage = () => {
         <div className="container">
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
             {step === 0 && (
-              <Box display="flex" flexDirection="column" gap={3}>
-                {error && <p>{error}</p>}
+              <Box display="flex" flexDirection="column" gap={2}>
+                {error && <p className="red">{error}</p>}
                 <Input
                   required
                   id="email"
@@ -232,14 +233,15 @@ const RegisterPage = () => {
                   register={register}
                   label="I accept terms and conditions"
                 />
+                <Box display={"flex"} justifyContent={"space-between"}>
+                  <Button onClick={() => setStep(step - 1)} label={"Back"} />
 
-                <Button onClick={() => setStep(step - 1)} label={"Back"} />
-
-                {loading ? (
-                  <CircularProgress />
-                ) : (
-                  <Button type="submit" label={"Submit"}></Button>
-                )}
+                  {loading ? (
+                    <CircularProgress />
+                  ) : (
+                    <Button type="submit" label={"Submit"}></Button>
+                  )}
+                </Box>
               </Box>
             )}
           </form>
