@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 
 const WelcomePage = () => {
   return (
-    <div>
+    <div className="welcome">
       <Heading title={"Welcome to our world"}/>
       <Box display={"flex"} justifyContent={"center"} gap={14} paddingTop={2}>
       <Box display="flex" gap={1} justifyContent={"center"} alignItems={"center"}>

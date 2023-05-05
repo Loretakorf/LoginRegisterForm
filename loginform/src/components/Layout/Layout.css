@@ -1,9 +1,15 @@
 .container {
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items:center;
+ 
 }
+section {
+  margin-top: 110px;
+}
+
 input {
   color: white;
   border: none;
@@ -14,6 +20,9 @@ input {
 }
 input[type="checkbox"] {
   height: 15px;
+}
+input:required:invalid {
+  border: 1px solid red;
 }
 input::placeholder {
   color: white;

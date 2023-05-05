@@ -1,29 +1,16 @@
-import { ErrorMessage } from "@hookform/error-message";
-const Input = ({ placeholder, type, errors, disabled, id, name, register }) => {
+const Input = ({ placeholder, type, errors, disabled, id, name, register, label }) => {
   return (
     <div className="input-container">
       <input
-        required
+        label={label}
         placeholder={placeholder}
         {...register(name)}
         type={type}
         id={id}
-        errors={errors}
         disabled={disabled}
       />
-      {/* <p>{errors[name].message}</p> */}
 
-      <div>
-        {errors[name] ? (
-          <ErrorMessage
-            errors={errors}
-            name={name}
-            render={({ message }) => <p>{message}</p>}
-          />
-        ) : (
-          <div></div>
-        )}
-      </div>
+      {errors[name] ? <p className="red">{errors[name]?.message}</p> : <></>}
     </div>
   );
 };

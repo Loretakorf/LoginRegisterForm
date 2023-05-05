@@ -1,8 +1,7 @@
 import { Box, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Heading from "../../components/Heading/Heading";
-import { useState } from "react";
-import { ErrorMessage } from "@hookform/error-message";
+import { useEffect, useState } from "react";
 import { registerUser } from "../../helpers/registerUser";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
@@ -47,37 +46,30 @@ import { routes } from "../../constants/routes";
 //   [schema]
 // )
 
-const schemaA = yup.object({
+const schemaA = yup.object().shape({
   email: yup
     .string()
-    .matches(/^(?!.*@[^,]*,)/, { message: "Email address is required" })
-    .required(),
+    .email()
+    // .matches(/^(?!.*@[^,]*,)/,"Email address is required")
+    .required("Email address is required"),
   password: yup
     .string()
     .min(6)
     .max(15)
-    .matches(/\d+/)
-    .required({ message: "Enter password please" }),
+    // .matches(/\d+/)
+    .required("Enter password please"),
   passworRepeat: yup
     .string()
-    .oneOf([yup.ref("password")], { message: "Passwords must match" })
+    .oneOf([yup.ref("password"), null], "Passwords don't match")
     .min(6)
     .max(15)
-    .required({ message: "Repeat password" }),
+    .required("Repeat password"),
 });
-const schemaB = yup
-  .object({
-    firstName: yup
-      .string()
-      .min(2)
-      .required({ message: "First name is required" }),
-    lastName: yup
-      .string()
-      .min(2)
-      .required({ message: "Last name is required" }),
-    checkbox: yup.boolean("I accept terms and conditions"),
-  })
-  .required();
+const schemaB = yup.object().shape({
+  firstName: yup.string().min(2).required("First name is required"),
+  lastName: yup.string().min(2).required("Last name is required"),
+  checkbox: yup.boolean().required(),
+});
 
 const schemaStep = (step) => {
   if (step === 0) {
@@ -98,8 +90,7 @@ const RegisterPage = () => {
   const {
     register,
     handleSubmit,
-
-    formState: errors,
+    formState: { errors },
   } = useForm(schemaStep(step));
 
   const [loading, setLoading] = useState(false);
@@ -107,7 +98,22 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   if(!error) {
+  //     return;
+  //   }
+  //   const clearError = ()=> {
+  //     setError("")
+  //   }
+  //   setTimeout(clearError, 10 * 1000)
+  // },[error])
+
   const onSubmit = async (formdata) => {
+   
+    if (step === 0 && formdata.email && formdata.password) {
+      setStep(1)
+      setLoading(false);
+    }
     if (
       step === 1 &&
       formdata.firstName &&
@@ -133,7 +139,7 @@ const RegisterPage = () => {
     } catch (error) {
       setError("Failed to register user");
     }
-
+    console.log(formdata);
     setLoading(false);
   };
 
@@ -155,11 +161,7 @@ const RegisterPage = () => {
                   errors={errors}
                   register={register}
                 />
-                <ErrorMessage
-                  errors={errors}
-                  name="email"
-                  render={({ message }) => <p>{message}</p>}
-                />
+
                 <Input
                   required
                   id="password"
@@ -168,11 +170,6 @@ const RegisterPage = () => {
                   placeholder="Password"
                   errors={errors}
                   register={register}
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="password"
-                  render={({ message }) => <p>{message}</p>}
                 />
 
                 <Input
@@ -183,11 +180,6 @@ const RegisterPage = () => {
                   placeholder="Password(repeat)"
                   errors={errors}
                   register={register}
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="passwordRepeat"
-                  render={({ message }) => <p>{message}</p>}
                 />
 
                 <Button onClick={() => setStep(step + 1)} label="Next" />
@@ -205,11 +197,6 @@ const RegisterPage = () => {
                   register={register}
                   errors={errors}
                 />
-                <ErrorMessage
-                  errors={errors}
-                  name="sfirstNamet"
-                  render={({ message }) => <p>{message}</p>}
-                />
 
                 <Input
                   required
@@ -220,19 +207,14 @@ const RegisterPage = () => {
                   errors={errors}
                   register={register}
                 />
-                <ErrorMessage
-                  errors={errors}
-                  name="lastName"
-                  render={({ message }) => <p>{message}</p>}
-                />
 
                 <Input
                   type="checkbox"
                   name={"checkbox"}
                   errors={errors}
                   register={register}
-                  label="I accept terms and conditions"
                 />
+                <label>I accept terms and conditions</label>
                 <Box display={"flex"} justifyContent={"space-between"}>
                   <Button onClick={() => setStep(step - 1)} label={"Back"} />
 

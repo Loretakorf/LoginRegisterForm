@@ -17,9 +17,6 @@ const HomePage = ({ onLogout, token }) => {
   };
 
   const getUserInfo = async () => {
-    // if (!token) {
-    //   return <Navigate to="/login" />;
-    // }
 
     try {
       setLoading(true);

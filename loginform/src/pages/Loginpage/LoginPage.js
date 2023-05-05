@@ -51,7 +51,7 @@ const LoginPage = ({ onLogin }) => {
   };
 
   return (
-    <div>
+    <section>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box display="flex" flexDirection="column" gap={3} marginTop={18}>
           {error && <p className="red">{error}</p>}
@@ -95,7 +95,7 @@ const LoginPage = ({ onLogin }) => {
         <p>Haven't account?</p>
         <Link to={routes.registerPage}>Register</Link>
       </Box>
-    </div>
+    </section>
   );
 };
 export default LoginPage;
