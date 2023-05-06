@@ -1,4 +1,4 @@
-import {  HOME } from "../constants/routes";
+import { HOME } from "../constants/routes";
 import Cookies from "js-cookie";
 
 export const getUser = () => {

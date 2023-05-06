@@ -90,7 +90,7 @@ const RegisterPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm(schemaStep(step));
 
   const [loading, setLoading] = useState(false);
@@ -98,15 +98,15 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if(!error) {
-  //     return;
-  //   }
-  //   const clearError = ()=> {
-  //     setError("")
-  //   }
-  //   setTimeout(clearError, 10 * 1000)
-  // },[error])
+  useEffect(() => {
+    if(!error) {
+      return;
+    }
+    const clearError = ()=> {
+      setError("")
+    }
+    setTimeout(clearError, 10 * 1000)
+  },[error])
 
   const onSubmit = async (formdata) => {
    
@@ -182,7 +182,7 @@ const RegisterPage = () => {
                   register={register}
                 />
 
-                <Button onClick={() => setStep(step + 1)} label="Next" />
+                <Button onClick={() => setStep(step + 1)} label="Next" disabled={!isValid}/>
               </Box>
             )}
 
