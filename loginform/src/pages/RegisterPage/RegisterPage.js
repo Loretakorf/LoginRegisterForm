@@ -1,7 +1,7 @@
 import { Box, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Heading from "../../components/Heading/Heading";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { registerUser } from "../../helpers/registerUser";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
@@ -10,47 +10,11 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../constants/routes";
 
-// const YupValidationResolver = (schema) =>
-// useCallback(
-//   async data => {
-//     try {
-//       const values = await schema.validate(data,{
-//         abortEarly: false
-//       });
-//       // const values1 = await schemaB.validate(data,{
-//       //   abortEarly: false
-//       // });
-
-//       return {
-//         values,
-//         // values1,
-//         errors: {}
-//       };
-//     } catch (errors) {
-//       return {
-//         values: {},
-//         values1: {},
-//         errors: errors.inner.reduce(
-//           (allErrors, currentError) => ({
-//             ...allErrors,
-//             [currentError.path]: {
-//               type: currentError.type ?? "validation",
-//               message: currentError.message
-//             }
-//           }),
-//           {}
-//         )
-//       }
-//     }
-//   },
-//   [schema]
-// )
-
 const schemaA = yup.object().shape({
   email: yup
     .string()
     .email()
-    // .matches(/^(?!.*@[^,]*,)/,"Email address is required")
+    // .matches(/^(?!.*@[^,]*,)/, "Email address is required")
     .required("Email address is required"),
   password: yup
     .string()
@@ -73,76 +37,74 @@ const schemaB = yup.object().shape({
 
 const schemaStep = (step) => {
   if (step === 0) {
-    return {
-      resolver: yupResolver(schemaA),
-    };
+    return schemaA;
   }
   if (step === 1) {
-    return {
-      resolver: yupResolver(schemaB),
-    };
+    return schemaB;
   }
 };
 
 const RegisterPage = () => {
   const [step, setStep] = useState(0);
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm(schemaStep(step));
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  } = useForm({
+    resolver: yupResolver(schemaStep(step)),
+    mode: "all",
+  });
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if(!error) {
-      return;
-    }
-    const clearError = ()=> {
-      setError("")
-    }
-    setTimeout(clearError, 10 * 1000)
-  },[error])
+  // useEffect(() => {
+  //   if (!error) {
+  //     return;
+  //   }
+  //   const clearError = () => {
+  //     setError("");
+  //   };
+  //   setTimeout(clearError, 10 * 1000);
+  // }, [error]);
 
-  const onSubmit = async (formdata) => {
-   
-    if (step === 0 && formdata.email && formdata.password) {
-      setStep(1)
+  const onSubmit = async (formData) => {
+    // try {
+    //   setLoading(true);
+
+    if (step === 0 && formData.email && formData.password) {
+      setStep(1);
       setLoading(false);
+      // return;
     }
     if (
       step === 1 &&
-      formdata.firstName &&
-      formdata.lastName &&
-      formdata.checkbox
+      formData.firstName &&
+      formData.lastName &&
+      formData.checkbox
     ) {
-      setLoading(true);
-    }
+      try {
+        await registerUser({
+          email: formData.email,
+          password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          checkbox: formData.checkbox,
+        });
 
-    try {
-      setLoading(true);
-      await registerUser({
-        email: formdata.email,
-        password: formdata.password,
-        firstName: formdata.firstName,
-        lastName: formdata.lastName,
-        checkbox: formdata.checkbox,
-      });
-
-      setError(null);
-      navigate(routes.loginPage, { replace: true });
-      setStep(1);
-    } catch (error) {
-      setError("Failed to register user");
+        setError("");
+        navigate(routes.loginPage, { replace: true });
+      } catch (error) {
+        setError("Failed to register user");
+        setTimeout(() => {
+          setError(null);
+        }, 1000);
+      }
+      console.log(formData);
+      setLoading(false);
     }
-    console.log(formdata);
-    setLoading(false);
   };
-
   return (
     <div className="main">
       <section>
@@ -160,6 +122,7 @@ const RegisterPage = () => {
                   placeholder="Email"
                   errors={errors}
                   register={register}
+                  disabled={loading ? true : false}
                 />
 
                 <Input
@@ -170,6 +133,7 @@ const RegisterPage = () => {
                   placeholder="Password"
                   errors={errors}
                   register={register}
+                  disabled={loading ? true : false}
                 />
 
                 <Input
@@ -180,9 +144,14 @@ const RegisterPage = () => {
                   placeholder="Password(repeat)"
                   errors={errors}
                   register={register}
+                  disabled={loading ? true : false}
                 />
 
-                <Button onClick={() => setStep(step + 1)} label="Next" disabled={!isValid}/>
+                <Button
+                  onClick={() => setStep(step + 1)}
+                  label="Next"
+                  disabled={!isValid}
+                />
               </Box>
             )}
 
@@ -196,6 +165,7 @@ const RegisterPage = () => {
                   type="text"
                   register={register}
                   errors={errors}
+                  disabled={loading ? true : false}
                 />
 
                 <Input
@@ -206,9 +176,11 @@ const RegisterPage = () => {
                   type="text"
                   errors={errors}
                   register={register}
+                  disabled={loading ? true : false}
                 />
 
                 <Input
+                  required
                   type="checkbox"
                   name={"checkbox"}
                   errors={errors}

@@ -1,16 +1,27 @@
-const Input = ({ placeholder, type, errors, disabled, id, name, register, label }) => {
+const Input = ({
+  id,
+  name,
+  type,
+  placeholder,
+  register,
+  required,
+  disabled,
+  errors,
+  label,
+}) => {
   return (
     <div className="input-container">
       <input
         label={label}
         placeholder={placeholder}
-        {...register(name)}
+        {...register(name, { required: true })}
         type={type}
         id={id}
+        errors={errors}
         disabled={disabled}
       />
 
-      {errors[name] ? <p className="red">{errors[name]?.message}</p> : <></>}
+      {errors[name] && <span className="red">{errors[name]?.message}</span>}
     </div>
   );
 };

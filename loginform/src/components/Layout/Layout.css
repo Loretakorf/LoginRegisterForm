@@ -9,7 +9,11 @@
 section {
   margin-top: 110px;
 }
-
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 input {
   color: white;
   border: none;

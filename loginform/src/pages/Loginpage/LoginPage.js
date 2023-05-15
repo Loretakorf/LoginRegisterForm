@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
 
-import { ErrorMessage } from "@hookform/error-message";
+// import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -63,12 +63,13 @@ const LoginPage = ({ onLogin }) => {
             placeholder="Email"
             register={register}
             errors={errors}
+            disabled={loading ? true : false}
           />
-          <ErrorMessage
+          {/* <ErrorMessage
             errors={errors}
             name="email"
             render={({ message }) => <p>{message}</p>}
-          />
+          /> */}
           <Input
             required
             id="password"
@@ -77,12 +78,13 @@ const LoginPage = ({ onLogin }) => {
             placeholder="Password"
             register={register}
             errors={errors}
+            disabled={loading ? true : false}
           />
-          <ErrorMessage
+          {/* <ErrorMessage
             errors={errors}
             name="password"
             render={({ message }) => <p>{message}</p>}
-          />
+          /> */}
           {loading ? (
             <CircularProgress />
           ) : (
