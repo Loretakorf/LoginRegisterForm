@@ -21,6 +21,7 @@ export const loginController = async (req, res) => {
        });
        return;
    }
+  
    const isPasswordMatch = await comparePassword(password, user.password);
    if(!isPasswordMatch) {
        res.status(403).json({
@@ -28,7 +29,7 @@ export const loginController = async (req, res) => {
        });
        return;
    }
-   console.log("Login", user);
+  
    res.json({
        _id: user._id,
        email: user.email,

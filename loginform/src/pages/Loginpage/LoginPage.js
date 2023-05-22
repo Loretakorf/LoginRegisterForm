@@ -1,14 +1,11 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loginUser } from "../../helpers/loginUser";
 import { routes } from "../../constants/routes";
 import { Box, CircularProgress } from "@mui/material";
-
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
-
-// import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -22,20 +19,29 @@ const schema = yup.object({
 });
 
 const LoginPage = ({ onLogin }) => {
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({ resolver: yupResolver(schema) });
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const onSubmit = async (formdata) => {
-    console.log(formdata);
 
+  useEffect(() => {
+    if (!error) {
+      return;
+    }
+    const clearError = () => {
+      setError("");
+    };
+    setTimeout(clearError, 10 * 1000);
+  }, [error]);
+
+  const onSubmit = async (formdata) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const response = await loginUser({
         email: formdata.email,
         password: formdata.password,
@@ -44,9 +50,9 @@ const LoginPage = ({ onLogin }) => {
       setError(null);
       navigate(routes.homePage);
     } catch (error) {
-      setError("Failed to register user");
+      setError("Failed to login user");
     }
-
+    console.log(formdata);
     setLoading(false);
   };
 
@@ -65,11 +71,7 @@ const LoginPage = ({ onLogin }) => {
             errors={errors}
             disabled={loading ? true : false}
           />
-          {/* <ErrorMessage
-            errors={errors}
-            name="email"
-            render={({ message }) => <p>{message}</p>}
-          /> */}
+
           <Input
             required
             id="password"
@@ -80,11 +82,7 @@ const LoginPage = ({ onLogin }) => {
             errors={errors}
             disabled={loading ? true : false}
           />
-          {/* <ErrorMessage
-            errors={errors}
-            name="password"
-            render={({ message }) => <p>{message}</p>}
-          /> */}
+
           {loading ? (
             <CircularProgress />
           ) : (
@@ -93,7 +91,13 @@ const LoginPage = ({ onLogin }) => {
         </Box>
       </form>
 
-      <Box display="flex" gap={2} marginTop={2} justifyContent={"center"} alignItems={"center"}>
+      <Box
+        display="flex"
+        gap={2}
+        marginTop={2}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         <p>Haven't account?</p>
         <Link to={routes.registerPage}>Register</Link>
       </Box>

@@ -2,7 +2,7 @@ import {  LOGIN } from "../constants/routes";
 
 export const loginUser = (user) => {
     return fetch(LOGIN, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },

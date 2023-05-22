@@ -1,7 +1,7 @@
 import { Box, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Heading from "../../components/Heading/Heading";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { registerUser } from "../../helpers/registerUser";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button";
@@ -32,7 +32,7 @@ const schemaA = yup.object().shape({
 const schemaB = yup.object().shape({
   firstName: yup.string().min(2).required("First name is required"),
   lastName: yup.string().min(2).required("Last name is required"),
-  checkbox: yup.boolean().required(),
+  checkbox: yup.boolean().oneOf([true]),
 });
 
 const schemaStep = (step) => {
@@ -59,24 +59,20 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!error) {
-  //     return;
-  //   }
-  //   const clearError = () => {
-  //     setError("");
-  //   };
-  //   setTimeout(clearError, 10 * 1000);
-  // }, [error]);
+  useEffect(() => {
+    if (!error) {
+      return;
+    }
+    const clearError = () => {
+      setError("");
+    };
+    setTimeout(clearError, 10 * 1000);
+  }, [error]);
 
   const onSubmit = async (formData) => {
-    // try {
-    //   setLoading(true);
-
     if (step === 0 && formData.email && formData.password) {
       setStep(1);
       setLoading(false);
-      // return;
     }
     if (
       step === 1 &&
@@ -85,6 +81,7 @@ const RegisterPage = () => {
       formData.checkbox
     ) {
       try {
+        setLoading(true);
         await registerUser({
           email: formData.email,
           password: formData.password,
@@ -97,11 +94,7 @@ const RegisterPage = () => {
         navigate(routes.loginPage, { replace: true });
       } catch (error) {
         setError("Failed to register user");
-        setTimeout(() => {
-          setError(null);
-        }, 1000);
       }
-      console.log(formData);
       setLoading(false);
     }
   };
@@ -180,7 +173,7 @@ const RegisterPage = () => {
                 />
 
                 <Input
-                  required
+                  // required
                   type="checkbox"
                   name={"checkbox"}
                   errors={errors}
